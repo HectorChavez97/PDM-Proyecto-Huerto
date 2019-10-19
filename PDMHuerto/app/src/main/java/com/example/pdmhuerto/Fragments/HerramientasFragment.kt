@@ -7,7 +7,13 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.pdmhuerto.Activities.Navigation_Activity
+import com.example.pdmhuerto.Adapters.CardViewAdapter
+import com.example.pdmhuerto.Adapters.CardViewHolder
+import com.example.pdmhuerto.Adapters.ProductViewAdapter
+import com.example.pdmhuerto.Adapters.ProductViewHolder
 import com.example.pdmhuerto.R
 
 class HerramientasFragment: Fragment() {
@@ -17,12 +23,40 @@ class HerramientasFragment: Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_herramientas, container, false)
-        val backIcon: ImageView = view.findViewById(R.id.back)
+        val root = inflater.inflate(R.layout.fragment_herramientas, container, false)
+        val backIcon: ImageView = root.findViewById(R.id.back)
 
         backIcon.setOnClickListener{
             (activity as Navigation_Activity).createFragment(CatalogoFragment())
         }
-        return view
+
+        val recyclerView: RecyclerView = root.findViewById(R.id.recycler_view_container)
+        val arrayList =  ArrayList<ProductViewHolder>()
+        arrayList.add(
+            ProductViewHolder(
+                "Producto 1",
+                "Placeholder para herramienta"
+            )
+        )
+        arrayList.add(
+            ProductViewHolder(
+                "Producto 2",
+                "Placeholder para herramienta"
+            )
+        )
+        arrayList.add(
+            ProductViewHolder(
+                "Producto 3",
+                "Placeholder para herramienta"
+            )
+        )
+
+
+        val adapt = ProductViewAdapter(arrayList)
+
+        recyclerView.layoutManager = LinearLayoutManager(context)
+        recyclerView.adapter = adapt
+
+        return root
     }
 }

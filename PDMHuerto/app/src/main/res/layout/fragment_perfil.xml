@@ -9,18 +9,21 @@
     <de.hdodenhof.circleimageview.CircleImageView
         android:theme="@style/CardView.Dark"
         android:id="@+id/user_thumbnail"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
         android:src="@drawable/user_profile_img"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@id/log_out"
         app:layout_constraintHorizontal_chainStyle="spread_inside"
+        app:layout_constraintVertical_chainStyle="spread"
+        app:layout_constraintBottom_toTopOf="@id/recycler_view_container"
         app:civ_border_width="1dp"/>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/log_out"
         android:text="Cerrar Sesión"
+        android:layout_margin="20dp"
         android:textAllCaps="false"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -29,5 +32,52 @@
         app:layout_constraintStart_toEndOf="@id/user_thumbnail"
         />
 
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/seguidos_t"
+        android:layout_width="100sp"
+        android:layout_height="wrap_content"
+        android:text="Seguidos"
+        app:layout_constraintTop_toBottomOf="@id/log_out"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:padding="10dp"
+        />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:padding="10dp"
+        android:id="@+id/seguidos_n"
+        android:layout_width="100sp"
+        android:layout_height="wrap_content"
+        android:text="75"
+        app:layout_constraintTop_toBottomOf="@id/seguidos_t"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/seguidores_t"
+        android:padding="10dp"
+        android:layout_width="100sp"
+        android:layout_height="wrap_content"
+        android:text="Seguidores"
+        app:layout_constraintEnd_toStartOf="@id/seguidos_t"
+        app:layout_constraintTop_toBottomOf="@id/log_out"
+        />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/seguidores_n"
+        android:padding="10dp"
+        android:layout_width="100sp"
+        android:layout_height="wrap_content"
+        android:text="125"
+        app:layout_constraintTop_toBottomOf="@id/seguidos_t"
+        app:layout_constraintEnd_toStartOf="@id/seguidos_n"
+        />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/seguidos_n"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
