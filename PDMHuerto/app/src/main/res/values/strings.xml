@@ -1,9 +1,17 @@
 <resources>
-    <string name="app_name">PDM Huerto</string>
+    <string name="app_name">Huerto</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="add_title">¿Cual es tu titulo?</string>
-    <string name="add_description">Agrega una descripcion...</string>
+    <string name="add_title">Add a title</string>
+    <string name="add_description">Insert a description...</string>
+    <string name="user">User</string>
+    <string name="password">Password</string>
+    <string name="password2">Confirm your Password</string>
+    <string name="mail">example@mail.com</string>
+    <string name="register">Register</string>
+    <string name="login">Login</string>
+    <string name="logout">Logout</string>
+
 
 </resources>

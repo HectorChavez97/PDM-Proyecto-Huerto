@@ -21,6 +21,7 @@ class PerfilFragment: Fragment() {
     ): View? {
         val root = inflater.inflate(R.layout.fragment_perfil, container, false)
         val recyclerView: RecyclerView = root.findViewById(R.id.recycler_view_container)
+
         val arrayList =  ArrayList<CardViewHolder>()
         arrayList.add(
             CardViewHolder(

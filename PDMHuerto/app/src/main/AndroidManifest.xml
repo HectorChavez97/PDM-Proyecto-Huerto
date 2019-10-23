@@ -9,8 +9,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activities.Post_Activity"></activity>
-        <activity android:name=".Activities.Navigation_Activity">
+        <activity android:name=".Activities.Register_Activity"></activity>
+        <activity android:name=".Activities.Navigation_Activity" />
+        <activity android:name=".Activities.Login_Activity" />
+        <activity android:name=".Activities.Post_Activity" />
+        <activity android:name=".Activities.Start_Activity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
