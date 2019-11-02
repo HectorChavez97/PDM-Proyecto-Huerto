@@ -13,13 +13,8 @@ import com.google.android.material.button.MaterialButton
 
 class CatalogoFragment: Fragment() {
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         var root = inflater.inflate(R.layout.fragment_catalogo, container, false)
-
 
         val semButton: MaterialButton = root.findViewById(R.id.fragment_catalogo_bt_1)
         val herButton: MaterialButton = root.findViewById(R.id.fragment_catalogo_bt_2)

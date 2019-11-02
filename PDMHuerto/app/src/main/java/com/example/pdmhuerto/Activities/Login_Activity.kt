@@ -25,6 +25,7 @@ class Login_Activity : AppCompatActivity(), View.OnClickListener {
             R.id.activity_login_btn_login -> {
                 val intent = Intent(this, Navigation_Activity::class.java)
                 startActivity(intent)
+                finish()
             }
         }
     }

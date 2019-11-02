@@ -5,18 +5,25 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activities.Register_Activity"
     android:background="@drawable/navigation_activity_background_img">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_h15"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent=".15"
+        />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/activity_register_til3"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="220dp"
         android:hint="@string/user"
+        android:layout_margin="10dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="@id/guideline_h15">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/activity_register_tiet_email3"
@@ -30,7 +37,7 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
+        android:layout_margin="10dp"
         android:hint="@string/password"
         app:layout_constraintTop_toBottomOf="@id/activity_register_til3">
 
@@ -47,7 +54,7 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
+        android:layout_margin="10dp"
         android:hint="@string/password2"
         app:layout_constraintTop_toBottomOf="@id/activity_register_til">
 
@@ -64,7 +71,7 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
+        android:layout_margin="10dp"
         android:hint="@string/mail"
         app:layout_constraintTop_toBottomOf="@id/activity_register_til2">
 
@@ -78,11 +85,11 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/activity_register_btn_register"
-        android:layout_width="130dp"
+        android:layout_width="150dp"
         android:layout_height="60dp"
-        android:layout_marginTop="44dp"
-        android:layout_marginEnd="120dp"
+        android:layout_marginTop="40dp"
         android:text="@string/register"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/activity_register_til4" />
 

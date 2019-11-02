@@ -38,7 +38,7 @@ class Navigation_Activity : AppCompatActivity(),ReplaceFragment {
                 }
 
                 R.id.huerto -> {
-
+                    createFragment(HuertoFragment())
                 }
          }
 

@@ -9,11 +9,15 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pdmhuerto.Activities.Post_Activity
 import com.example.pdmhuerto.Adapters.CardViewAdapter
-import com.example.pdmhuerto.Adapters.CardViewHolder
 import com.example.pdmhuerto.R
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import android.content.Intent
-
+import com.parse.FindCallback
+import com.parse.ParseException
+import com.parse.ParseObject
+import com.parse.ParseQuery
+import org.jetbrains.anko.doAsync
+import org.jetbrains.anko.uiThread
 
 
 class HomeFragment : Fragment() {
@@ -28,42 +32,24 @@ class HomeFragment : Fragment() {
             startActivity(intent)
         }
 
-        val arrayList =  ArrayList<CardViewHolder>()
-        arrayList.add(
-            CardViewHolder(
-                "Huerto 1, que emocion!",
-                "Esta es el huerto numero 1 que hago, ojala tenga mucha suerte con esto"
-            )
-        )
-        arrayList.add(
-            CardViewHolder(
-                "Murio mi huerto",
-                "Mi primer huerto se seco y tengo que empezar de nuevo"
-            )
-        )
-        arrayList.add(
-            CardViewHolder(
-                "Empezando de nuevo con mi huerto",
-                "Este es el segundo huerto que hago, ojala funcione"
-            )
-        )
-        arrayList.add(
-            CardViewHolder(
-                "Me rindo",
-                "Se volvio a morir todo el huerto, me doy por vencido con las plantitas"
-            )
-        )
-        arrayList.add(
-            CardViewHolder(
-                "Tips?",
-                "Alguien ayudeme con esto del huerto, soy muy malo"
-            )
-        )
+        doAsync {
+            val query = ParseQuery.getQuery<ParseObject>("Post")
+            query.findInBackground(object : FindCallback<ParseObject> {
+                var posts: List<ParseObject> = arrayListOf()
 
-        val adapt = CardViewAdapter(arrayList)
+                override fun done(postList: List<ParseObject>, e: ParseException?) {
+                    if (e == null) {
+                        posts = postList
+                        uiThread{
+                            recyclerView.adapter = CardViewAdapter(posts)
+                            recyclerView.adapter?.notifyDataSetChanged()
+                            recyclerView.layoutManager = LinearLayoutManager(context)
+                        }
 
-        recyclerView.layoutManager = LinearLayoutManager(context)
-        recyclerView.adapter = adapt
+                    }
+                }
+            })
+        }
 
         return root
     }

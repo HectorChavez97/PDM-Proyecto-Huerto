@@ -25,6 +25,7 @@ class Register_Activity : AppCompatActivity(), View.OnClickListener {
             R.id.activity_register_btn_register -> {
                 val intent = Intent(this, Navigation_Activity::class.java)
                 startActivity(intent)
+                finish()
             }
         }
     }

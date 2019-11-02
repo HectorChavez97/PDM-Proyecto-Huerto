@@ -6,13 +6,9 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pdmhuerto.R
+import com.parse.ParseObject
 
-//Agregar constructor
-class CardViewHolder (val title: String, val description: String){
-
-}
-
-class CardViewAdapter(val list: ArrayList<CardViewHolder>): RecyclerView.Adapter<CardViewAdapter.ViewHolder>(){
+class CardViewAdapter(val list: List<ParseObject>): RecyclerView.Adapter<CardViewAdapter.ViewHolder>(){
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v = LayoutInflater.from(parent.context).inflate(R.layout.card_view_recycler, parent, false)
 
@@ -29,13 +25,13 @@ class CardViewAdapter(val list: ArrayList<CardViewHolder>): RecyclerView.Adapter
 
     class ViewHolder(view: View): RecyclerView.ViewHolder(view){
 
-        fun bindItems(data: CardViewHolder){
+        fun bindItems(data: ParseObject){
             val title: TextView = itemView.findViewById(R.id.title)
             val description: TextView = itemView.findViewById(R.id.description)
             //ImageView
 
-            title.text = data.title
-            description.text = data.description
+            title.text = data.getString("Title").toString()
+            description.text = data.getString("Description").toString()
         }
     }
 

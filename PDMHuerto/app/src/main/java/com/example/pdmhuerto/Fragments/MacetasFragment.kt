@@ -4,8 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -13,16 +11,13 @@ import com.example.pdmhuerto.Activities.Navigation_Activity
 import com.example.pdmhuerto.Adapters.ProductViewAdapter
 import com.example.pdmhuerto.Adapters.ProductViewHolder
 import com.example.pdmhuerto.R
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class MacetasFragment: Fragment() {
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val root = inflater.inflate(R.layout.fragment_macetas, container, false)
-        val backIcon: ImageView = root.findViewById(R.id.back)
+        val backIcon: FloatingActionButton = root.findViewById(R.id.back)
 
         backIcon.setOnClickListener{
             (activity as Navigation_Activity).createFragment(CatalogoFragment())
@@ -48,7 +43,6 @@ class MacetasFragment: Fragment() {
                 "Placeholder para macetas"
             )
         )
-
 
         val adapt = ProductViewAdapter(arrayList)
 
