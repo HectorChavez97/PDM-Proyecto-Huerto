@@ -2,14 +2,12 @@ package com.example.pdmhuerto.Activities
 
 import android.app.Activity
 import android.app.AlertDialog
-import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.DisplayMetrics
 import android.view.View
-import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.pdmhuerto.R
@@ -20,8 +18,6 @@ import com.parse.ParseFile
 import com.parse.ParseObject
 import kotlinx.android.synthetic.main.activity_post_.*
 import org.jetbrains.anko.find
-import org.jetbrains.anko.toast
-import java.io.File
 
 
 class Post_Activity : AppCompatActivity(), View.OnClickListener {
@@ -44,7 +40,7 @@ class Post_Activity : AppCompatActivity(), View.OnClickListener {
         cancel_button = find(R.id.cancel_button)
         next_button = find(R.id.next_button)
 
-        titleInfo = find(R.id.post_title)
+        titleInfo = find(R.id.event_title)
         descriptionInfo = find(R.id.post_description)
         descriptionText = find(R.id.post_description_text)
 

@@ -19,6 +19,7 @@ class MacetasFragment: Fragment() {
         val root = inflater.inflate(R.layout.fragment_macetas, container, false)
         val backIcon: FloatingActionButton = root.findViewById(R.id.back)
 
+
         backIcon.setOnClickListener{
             (activity as Navigation_Activity).createFragment(CatalogoFragment())
         }

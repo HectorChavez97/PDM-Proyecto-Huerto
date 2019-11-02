@@ -19,6 +19,7 @@ class SemillasFragment: Fragment() {
         val root = inflater.inflate(R.layout.fragment_semillas, container, false)
         val backIcon: FloatingActionButton = root.findViewById(R.id.back)
 
+
         backIcon.setOnClickListener{
             (activity as Navigation_Activity).createFragment(CatalogoFragment())
         }
