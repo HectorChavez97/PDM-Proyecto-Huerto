@@ -8,16 +8,18 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pdmhuerto.Activities.Post_Activity
-import com.example.pdmhuerto.Adapters.CardViewAdapter
 import com.example.pdmhuerto.R
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import android.content.Intent
+import com.example.pdmhuerto.Adapters.HomeAdapter
 import com.parse.FindCallback
 import com.parse.ParseException
 import com.parse.ParseObject
 import com.parse.ParseQuery
+import kotlinx.android.synthetic.main.card_view_recycler.*
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
+import java.util.*
 
 
 class HomeFragment : Fragment() {
@@ -34,6 +36,7 @@ class HomeFragment : Fragment() {
 
         doAsync {
             val query = ParseQuery.getQuery<ParseObject>("Post")
+            query.include("PostedBy")
             query.findInBackground(object : FindCallback<ParseObject> {
                 var posts: List<ParseObject> = arrayListOf()
 
@@ -41,7 +44,8 @@ class HomeFragment : Fragment() {
                     if (e == null) {
                         posts = postList
                         uiThread{
-                            recyclerView.adapter = CardViewAdapter(posts)
+                            Collections.reverse(posts)
+                            recyclerView.adapter = HomeAdapter(posts)
                             recyclerView.adapter?.notifyDataSetChanged()
                             recyclerView.layoutManager = LinearLayoutManager(context)
                         }

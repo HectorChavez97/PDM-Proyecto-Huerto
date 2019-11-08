@@ -2,51 +2,66 @@ package com.example.pdmhuerto.Activities
 
 import android.app.Activity
 import android.app.AlertDialog
+import android.content.ContentResolver
+import android.content.ContentValues
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.graphics.ImageDecoder
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.os.Environment
 import android.provider.MediaStore
 import android.util.DisplayMetrics
 import android.view.View
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.net.toFile
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.example.pdmhuerto.R
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
-import com.parse.ParseFile
-import com.parse.ParseObject
-import kotlinx.android.synthetic.main.activity_post_.*
+import com.parse.*
 import org.jetbrains.anko.find
+import java.io.ByteArrayOutputStream
+import java.io.File
+import java.io.FileOutputStream
 
 
 class Post_Activity : AppCompatActivity(), View.OnClickListener {
-
     lateinit var titleInfo: TextInputEditText
     lateinit var descriptionInfo: TextInputLayout
     lateinit var descriptionText: TextInputEditText
+    lateinit var photoHolder: ImageView
 
-    lateinit var imageFile: ParseFile
+    lateinit var photoButton: FloatingActionButton
+    lateinit var cancelButton: FloatingActionButton
+    lateinit var nextButton: FloatingActionButton
 
-    lateinit var photo_button: FloatingActionButton
-    lateinit var cancel_button: FloatingActionButton
-    lateinit var next_button: FloatingActionButton
+    private var imageFile: ParseFile? = null
+    private var imageUri: Uri? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_post_)
 
-        photo_button = find(R.id.photo_button)
-        cancel_button = find(R.id.cancel_button)
-        next_button = find(R.id.next_button)
+        photoButton = find(R.id.photo_button)
+        photoButton.setOnClickListener(this)
+
+        cancelButton = find(R.id.cancel_button)
+        cancelButton.setOnClickListener(this)
+
+        nextButton = find(R.id.next_button)
+        nextButton.setOnClickListener(this)
 
         titleInfo = find(R.id.event_title)
         descriptionInfo = find(R.id.post_description)
         descriptionText = find(R.id.post_description_text)
-
-        photo_button.setOnClickListener(this)
-        cancel_button.setOnClickListener(this)
-        next_button.setOnClickListener(this)
+        photoHolder = find(R.id.photoHolder)
     }
 
     override fun onClick(v: View?) {
@@ -65,19 +80,46 @@ class Post_Activity : AppCompatActivity(), View.OnClickListener {
                     .show()
             }
             R.id.next_button -> {
-                post()
-
-                val intent = Intent(this, Navigation_Activity::class.java)
-                startActivity(intent)
-                finish()
+                if(validateInfo() == COMPLETE) {
+                    val intent = Intent(this, Navigation_Activity::class.java)
+                    startActivity(intent)
+                    finish()
+                }
             }
             R.id.photo_button -> {
-                val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+               if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+                   if(checkSelfPermission(android.Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED ||
+                       checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED ){
 
-                //Existe aplicacion que soporta fotos
-                if(intent.resolveActivity(packageManager) != null){
-                    startActivityForResult(intent, CAMARA_REQUEST_ACCEPTED)
-                }
+                       val permission = arrayOf(android.Manifest.permission.CAMERA, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                       requestPermissions(permission, PERMISSIONS_ACCEPTED)
+                   }
+
+                   else openCamera()
+               }
+
+                else openCamera()
+            }
+        }
+    }
+
+    private fun openCamera(){
+        val values = ContentValues()
+        values.put(MediaStore.Images.Media.TITLE, "New picture")
+        values.put(MediaStore.Images.Media.TITLE, "From the Camera")
+        imageUri = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
+
+        val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri)
+        startActivityForResult(cameraIntent, IMAGE_CAPTURE_CODE)
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        when(requestCode){
+            PERMISSIONS_ACCEPTED -> {
+                if(grantResults.size >= 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) openCamera()
+
+                else Toast.makeText(this, "Permissions denied", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -86,20 +128,32 @@ class Post_Activity : AppCompatActivity(), View.OnClickListener {
         super.onActivityResult(requestCode, resultCode, data)
 
         when(requestCode){
-            CAMARA_REQUEST_ACCEPTED -> {
-                if(resultCode == Activity.RESULT_OK && data != null){
-                    val displayMetrics = DisplayMetrics()
-                    windowManager.defaultDisplay.getMetrics(displayMetrics)
+            IMAGE_CAPTURE_CODE -> {
+                if(resultCode == Activity.RESULT_OK){
+                    Glide.with(this).load(imageUri).into(photoHolder)
+                    val image: Bitmap
 
-                    val image = data.extras?.get("data") as Bitmap
-                    //imageFile = data.extras?.get("data") as ParseFile
+                    if(Build.VERSION.SDK_INT < 28) {
+                        image = MediaStore.Images.Media.getBitmap(this.contentResolver, imageUri)
+                    }
 
-                    var height = displayMetrics.heightPixels + 50
-                    var width = displayMetrics.widthPixels
+                    else{
+                        val imageDecoder = ImageDecoder.createSource(this.contentResolver, imageUri!!)
+                        image = ImageDecoder.decodeBitmap(imageDecoder)
+                    }
 
-                    val sizedImage = Bitmap.createScaledBitmap(image, width, height/2, true)
+                    val file = File(this.cacheDir, image.toString())
+                    file.createNewFile()
 
-                    photoHolder.setImageBitmap(sizedImage)
+                    val bos = ByteArrayOutputStream()
+                    image.compress(Bitmap.CompressFormat.PNG, 0, bos)
+                    val bitmapdata = bos.toByteArray()
+
+                    val fos = FileOutputStream(file)
+                    fos.write(bitmapdata)
+                    fos.flush()
+                    fos.close()
+                    imageFile = ParseFile(file)
                 }
             }
 
@@ -109,40 +163,51 @@ class Post_Activity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
-    private fun validateData(): Int{
-        if(titleInfo.text.toString() == "") return TITLE_EMPTY
-        else if(descriptionText.text.toString() == "") return DESCRIPTION_EMPTY
+    private fun getDataError(): Int{
+        if (titleInfo.text.toString() == "")      return TITLE_EMPTY
+        if(descriptionText.text.toString() == "") return DESCRIPTION_EMPTY
+        if(imageUri == null)                      return IMAGE_EMPTY
+
         return COMPLETE
     }
 
-    private fun post() {
-        when(validateData()){
+    private fun validateInfo(): Int {
+        when(getDataError()){
             TITLE_EMPTY -> {
-                Toast.makeText(this, "Ingresa un titulo!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Please insert a title for your post", Toast.LENGTH_SHORT).show()
+                return TITLE_EMPTY
             }
             DESCRIPTION_EMPTY ->{
-                Toast.makeText(this, "Ingresa una descripcion!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Please insert a description for your post", Toast.LENGTH_SHORT).show()
+                return DESCRIPTION_EMPTY
             }
             IMAGE_EMPTY -> {
-                Toast.makeText(this, "No imagen!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "No image found, please add one", Toast.LENGTH_SHORT).show()
+                return IMAGE_EMPTY
             }
             COMPLETE -> {
-                Toast.makeText(this, "funciona", Toast.LENGTH_LONG).show()
-                loadBack()
+                loadInfo()
+                return COMPLETE
             }
         }
+
+        return -1
     }
 
-    private fun loadBack(){
+    private fun loadInfo(){
+        val userPointer = "PrbiCo5PYV"
         val post = ParseObject("Post")
         post.put("Title", titleInfo.text.toString())
         post.put("Description", descriptionText.text.toString())
+        post.put("PostedBy", ParseObject.createWithoutData("_User", userPointer))
+        post.put("Image", imageFile!!)
 
         post.saveInBackground()
-    }
+    }   
 
     companion object{
-        const val CAMARA_REQUEST_ACCEPTED = 1000
+        const val PERMISSIONS_ACCEPTED = 1000
+        const val IMAGE_CAPTURE_CODE = 1001
         const val TITLE_EMPTY = 1
         const val DESCRIPTION_EMPTY = 2
         const val IMAGE_EMPTY  = 3

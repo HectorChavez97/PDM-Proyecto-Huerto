@@ -16,32 +16,16 @@ class Navigation_Activity : AppCompatActivity(),ReplaceFragment {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_navigation)
 
-        /*val root = inflater.inflate(R.layout.fragment_catalogo, container, false)
-        val semButton: MaterialButton = findViewById(R.id.fragment_catalogo_bt_1)
-        val herButton: MaterialButton = findViewById(R.id.fragment_catalogo_bt_2)
-        val tieButton: MaterialButton = findViewById(R.id.fragment_catalogo_bt_3)
-        val macButton: MaterialButton = findViewById(R.id.fragment_catalogo_bt_4)*/
-
         var navView : BottomNavigationView  = findViewById(R.id.bottom_navigation)
         createFragment(HomeFragment())
 
+        supportActionBar?.hide()
         navView.setOnNavigationItemSelectedListener { item ->
             when(item.itemId){
-                R.id.home -> {
-                    createFragment(HomeFragment())
-                }
-
-                R.id.perfil -> {
-                    createFragment(PerfilFragment())
-                }
-
-                R.id.catalogo -> {
-                    createFragment(CatalogoFragment())
-                }
-
-                R.id.huerto -> {
-                    createFragment(HuertoFragment())
-                }
+                R.id.home -> createFragment(HomeFragment())
+                R.id.perfil ->  createFragment(PerfilFragment())
+                R.id.catalogo -> createFragment(CatalogoFragment())
+                R.id.huerto -> createFragment(HuertoFragment())
          }
 
          true
