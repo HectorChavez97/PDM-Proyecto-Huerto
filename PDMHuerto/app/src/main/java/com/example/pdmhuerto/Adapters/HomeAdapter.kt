@@ -37,13 +37,14 @@ class HomeAdapter(val list: List<ParseObject>): RecyclerView.Adapter<HomeAdapter
             val profilePicture: ImageView = itemView.findViewById(R.id.user_profile_picture)
             val userName:       TextView  = itemView.findViewById(R.id.user_name)
 
-            val img:     ParseFile  = data.getParseFile("Image")!!
-            val userN:   String     = data.getParseObject("PostedBy")?.getString("username")!!
-            val userImg: ParseFile  = data.getParseObject("PostedBy")!!.getParseFile("ProfilePicture")!!
+            val img:     ParseFile  = data.getParseFile("image")!!
+            val userN:   String     = data.getParseObject("postedBy")?.getString("username")!!
+            val userImg: ParseFile  = data.getParseObject("postedBy")!!.getParseFile("profilePicture")!!
+
 
             userName.text    = userN
-            title.text       = data.getString("Title").toString()
-            description.text = data.getString("Description").toString()
+            title.text       = data.getString("title").toString()
+            description.text = data.getString("description").toString()
             rm.load(img.data).into(image)
             rm.load(userImg.data).apply(RequestOptions.circleCropTransform()).into(profilePicture)
         }

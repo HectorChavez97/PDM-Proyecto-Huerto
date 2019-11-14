@@ -11,63 +11,55 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:columnCount="4"
-        android:orientation="horizontal">
+        android:layout_margin="5dp">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/user_profile_picture"
             android:layout_width="90dp"
             android:layout_height="90dp"
-            android:layout_RowSpan="2"
-            android:layout_marginStart="10dp"
-            android:src="@drawable/user_profile_img" />
+            android:src="@drawable/user_profile_img"
+            android:layout_column="0" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/seguidos_t"
-            android:layout_width="100sp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_row="0"
+            android:text="@string/following"
             android:layout_column="1"
-            android:padding="10dp"
-            android:text="Seguidos"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/seguidos_n"
-            android:layout_width="100sp"
-            android:layout_height="wrap_content"
-            android:layout_row="1"
-            android:layout_column="1"
-            android:padding="10dp"
-            android:text="75" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/seguidores_t"
-            android:layout_width="100sp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_row="0"
+            android:text="@string/followers"
             android:layout_column="2"
-            android:padding="10dp"
-            android:text="Seguidores"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/seguidores_n"
-            android:layout_width="100sp"
-            android:layout_height="wrap_content"
-            android:layout_row="1"
-            android:layout_column="2"
-            android:padding="10dp"
-            android:text="125" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/log_out"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_row="0"
-            android:layout_column="3"
-            android:layout_margin="20dp"
+            android:layout_margin="5dp"
             android:text="@string/logout"
+            android:layout_column="3"
             android:textAllCaps="false" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/seguidos_n"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_column="1"
+            android:layout_row="1"
+            android:text="75" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/seguidores_n"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_column="2"
+            android:layout_row="1"
+            android:text="125" />
 
     </GridLayout>
 
@@ -78,6 +70,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/linear"
         android:layout_alignParentBottom="true"
-        />
+        android:layout_marginTop="0dp"
+        android:layout_marginBottom="0dp" />
 
 </RelativeLayout>

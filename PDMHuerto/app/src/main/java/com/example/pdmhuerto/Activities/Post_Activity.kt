@@ -197,10 +197,10 @@ class Post_Activity : AppCompatActivity(), View.OnClickListener {
     private fun loadInfo(){
         val userPointer = "PrbiCo5PYV"
         val post = ParseObject("Post")
-        post.put("Title", titleInfo.text.toString())
-        post.put("Description", descriptionText.text.toString())
-        post.put("PostedBy", ParseObject.createWithoutData("_User", userPointer))
-        post.put("Image", imageFile!!)
+        post.put("title", titleInfo.text.toString())
+        post.put("description", descriptionText.text.toString())
+        post.put("postedBy", ParseObject.createWithoutData("_User", userPointer))
+        post.put("image", imageFile!!)
 
         post.saveInBackground()
     }   

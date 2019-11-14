@@ -1,5 +1,6 @@
 package com.example.pdmhuerto.Fragments
 
+import android.app.AlertDialog
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -33,10 +34,9 @@ class HomeFragment : Fragment() {
             val intent = Intent(activity, Post_Activity::class.java)
             startActivity(intent)
         }
-
         doAsync {
             val query = ParseQuery.getQuery<ParseObject>("Post")
-            query.include("PostedBy")
+            query.include("postedBy")
             query.findInBackground(object : FindCallback<ParseObject> {
                 var posts: List<ParseObject> = arrayListOf()
 

@@ -67,7 +67,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/activity_register_til2"/>
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 

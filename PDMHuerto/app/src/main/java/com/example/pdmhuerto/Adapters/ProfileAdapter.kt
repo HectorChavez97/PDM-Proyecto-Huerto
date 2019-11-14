@@ -35,10 +35,10 @@ class ProfileAdapter(val list: List<ParseObject>): RecyclerView.Adapter<ProfileA
             val description:    TextView  = itemView.findViewById(R.id.description)
             val image:          ImageView = itemView.findViewById(R.id.imageView)
 
-            val img:     ParseFile  = data.getParseFile("Image")!!
+            val img:     ParseFile  = data.getParseFile("image")!!
 
-            title.text       = data.getString("Title").toString()
-            description.text = data.getString("Description").toString()
+            title.text       = data.getString("title").toString()
+            description.text = data.getString("description").toString()
             rm.load(img.data).into(image)
         }
     }
