@@ -130,8 +130,8 @@ class Post_Activity : AppCompatActivity(), View.OnClickListener {
         when(requestCode){
             IMAGE_CAPTURE_CODE -> {
                 if(resultCode == Activity.RESULT_OK){
-                    Glide.with(this).load(imageUri).into(photoHolder)
                     val image: Bitmap
+                    Glide.with(this).load(imageUri).into(photoHolder)
 
                     if(Build.VERSION.SDK_INT < 28) {
                         image = MediaStore.Images.Media.getBitmap(this.contentResolver, imageUri)
@@ -147,10 +147,9 @@ class Post_Activity : AppCompatActivity(), View.OnClickListener {
 
                     val bos = ByteArrayOutputStream()
                     image.compress(Bitmap.CompressFormat.PNG, 0, bos)
-                    val bitmapdata = bos.toByteArray()
 
                     val fos = FileOutputStream(file)
-                    fos.write(bitmapdata)
+                    fos.write(bos.toByteArray())
                     fos.flush()
                     fos.close()
                     imageFile = ParseFile(file)
@@ -185,17 +184,14 @@ class Post_Activity : AppCompatActivity(), View.OnClickListener {
                 Toast.makeText(this, "No image found, please add one", Toast.LENGTH_SHORT).show()
                 return IMAGE_EMPTY
             }
-            COMPLETE -> {
-                loadInfo()
-                return COMPLETE
-            }
         }
 
-        return -1
+        loadInfo()
+        return COMPLETE
     }
 
     private fun loadInfo(){
-        val userPointer = "PrbiCo5PYV"
+        val userPointer = "L2csCmr04l"
         val post = ParseObject("Post")
         post.put("title", titleInfo.text.toString())
         post.put("description", descriptionText.text.toString())

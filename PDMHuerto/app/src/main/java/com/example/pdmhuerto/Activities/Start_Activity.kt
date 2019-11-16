@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import com.example.pdmhuerto.R
+import com.parse.ParseUser
 import org.jetbrains.anko.find
 
 class Start_Activity : AppCompatActivity(), View.OnClickListener {
@@ -21,6 +22,15 @@ class Start_Activity : AppCompatActivity(), View.OnClickListener {
 
         mLogin.setOnClickListener(this)
         mRegister.setOnClickListener(this)
+
+        userLogged()
+    }
+
+    private fun userLogged(){
+        if(ParseUser.getCurrentUser() != null) {
+            val intent = Intent(this, Navigation_Activity::class.java)
+            startActivity(intent)
+        }
     }
 
     override fun onClick(v: View?) {

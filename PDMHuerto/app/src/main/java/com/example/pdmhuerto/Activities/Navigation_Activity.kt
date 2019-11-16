@@ -1,7 +1,5 @@
 package com.example.pdmhuerto.Activities
 
-import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -11,7 +9,7 @@ import com.example.pdmhuerto.R
 import com.example.pdmhuerto.Interfaces.ReplaceFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
-class Navigation_Activity : AppCompatActivity(),ReplaceFragment {
+class Navigation_Activity : AppCompatActivity(), ReplaceFragment {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_navigation)

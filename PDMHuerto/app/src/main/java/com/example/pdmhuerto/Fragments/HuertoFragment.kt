@@ -12,8 +12,7 @@ import com.example.pdmhuerto.R
 
 class HuertoFragment : Fragment() {
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val root = inflater.inflate(R.layout.fragment_huerto, container, false)
 
         val intent = Intent(Intent.ACTION_INSERT).setData(CalendarContract.Events.CONTENT_URI).
