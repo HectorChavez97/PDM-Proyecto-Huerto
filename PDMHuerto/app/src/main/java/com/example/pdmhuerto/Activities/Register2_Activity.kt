@@ -130,9 +130,9 @@ class Register2_Activity : AppCompatActivity(), View.OnClickListener  {
         user.username = intent.getStringExtra("username")
         user.email = intent.getStringExtra("email")
         user.setPassword(intent.getStringExtra("password"))
-        doAsync {
+     /*   doAsync {
             user.put("profileImage", parseFile)
-        }
+        } */
 
         user.signUpInBackground(object: SignUpCallback {
             override fun done(e: ParseException?) {

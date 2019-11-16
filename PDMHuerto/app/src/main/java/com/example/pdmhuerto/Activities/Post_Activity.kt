@@ -2,8 +2,11 @@ package com.example.pdmhuerto.Activities
 
 import android.app.Activity
 import android.app.AlertDialog
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.content.ContentResolver
 import android.content.ContentValues
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -15,9 +18,12 @@ import android.os.Environment
 import android.provider.MediaStore
 import android.util.DisplayMetrics
 import android.view.View
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.core.net.toFile
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -33,6 +39,8 @@ import java.io.FileOutputStream
 
 
 class Post_Activity : AppCompatActivity(), View.OnClickListener {
+    private lateinit var button: Button
+
     lateinit var titleInfo: TextInputEditText
     lateinit var descriptionInfo: TextInputLayout
     lateinit var descriptionText: TextInputEditText
@@ -62,6 +70,8 @@ class Post_Activity : AppCompatActivity(), View.OnClickListener {
         descriptionInfo = find(R.id.post_description)
         descriptionText = find(R.id.post_description_text)
         photoHolder = find(R.id.photoHolder)
+
+        createNotificationChannel()
     }
 
     override fun onClick(v: View?) {
@@ -84,6 +94,15 @@ class Post_Activity : AppCompatActivity(), View.OnClickListener {
                     val intent = Intent(this, Navigation_Activity::class.java)
                     startActivity(intent)
                     finish()
+
+                    val builder = NotificationCompat.Builder(this, CHANNEL_ID)
+                        .setSmallIcon(R.drawable.notification)
+                        .setContentTitle("Tu publicacion esta por publicarse")
+                        .setContentText("En unos segundos su publicacion estara lista y podran verla tu y los demas usuarios")
+                        .setStyle(NotificationCompat.BigTextStyle())
+                        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+
+                    NotificationManagerCompat.from(this).notify(11, builder.build())
                 }
             }
             R.id.photo_button -> {
@@ -208,6 +227,20 @@ class Post_Activity : AppCompatActivity(), View.OnClickListener {
         const val DESCRIPTION_EMPTY = 2
         const val IMAGE_EMPTY  = 3
         const val COMPLETE = 10
+        const val CHANNEL_ID = "AndroidCourse"
+    }
+
+    private fun createNotificationChannel(){
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            val notificationChannel = NotificationChannel(
+                CHANNEL_ID,
+                "com.example.pdmhuerto",
+                NotificationManager.IMPORTANCE_DEFAULT
+            )
+
+            val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(notificationChannel)
+        }
     }
 
 }
