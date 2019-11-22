@@ -30,6 +30,7 @@ class Start_Activity : AppCompatActivity(), View.OnClickListener {
         if(ParseUser.getCurrentUser() != null) {
             val intent = Intent(this, Navigation_Activity::class.java)
             startActivity(intent)
+            finish()
         }
     }
 

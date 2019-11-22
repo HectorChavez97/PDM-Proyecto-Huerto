@@ -4,19 +4,16 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.app.NotificationChannel
 import android.app.NotificationManager
-import android.content.ContentResolver
 import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
-import android.graphics.ImageDecoder
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.os.Environment
 import android.provider.MediaStore
-import android.util.DisplayMetrics
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
@@ -24,9 +21,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import androidx.core.net.toFile
+import androidx.core.graphics.drawable.toBitmap
 import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
 import com.example.pdmhuerto.R
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.textfield.TextInputEditText
@@ -34,8 +30,6 @@ import com.google.android.material.textfield.TextInputLayout
 import com.parse.*
 import org.jetbrains.anko.find
 import java.io.ByteArrayOutputStream
-import java.io.File
-import java.io.FileOutputStream
 
 
 class Post_Activity : AppCompatActivity(), View.OnClickListener {
@@ -149,29 +143,16 @@ class Post_Activity : AppCompatActivity(), View.OnClickListener {
         when(requestCode){
             IMAGE_CAPTURE_CODE -> {
                 if(resultCode == Activity.RESULT_OK){
-                    val image: Bitmap
                     Glide.with(this).load(imageUri).into(photoHolder)
 
-                    if(Build.VERSION.SDK_INT < 28) {
-                        image = MediaStore.Images.Media.getBitmap(this.contentResolver, imageUri)
-                    }
+                    val inputStream = contentResolver.openInputStream(imageUri!!)
+                    val drawable = Drawable.createFromStream(inputStream, imageUri.toString())
 
-                    else{
-                        val imageDecoder = ImageDecoder.createSource(this.contentResolver, imageUri!!)
-                        image = ImageDecoder.decodeBitmap(imageDecoder)
-                    }
-
-                    val file = File(this.cacheDir, image.toString())
-                    file.createNewFile()
-
-                    val bos = ByteArrayOutputStream()
-                    image.compress(Bitmap.CompressFormat.PNG, 0, bos)
-
-                    val fos = FileOutputStream(file)
-                    fos.write(bos.toByteArray())
-                    fos.flush()
-                    fos.close()
-                    imageFile = ParseFile(file)
+                    val bitmap = drawable.toBitmap()
+                    val arrayBytes = ByteArrayOutputStream()
+                    bitmap.compress(Bitmap.CompressFormat.PNG, 0, arrayBytes)
+                    val parseIma = arrayBytes.toByteArray()
+                    imageFile = ParseFile("postImage.png", parseIma)
                 }
             }
 
@@ -210,7 +191,8 @@ class Post_Activity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun loadInfo(){
-        val userPointer = "L2csCmr04l"
+        val userPointer = ParseUser.getCurrentUser().objectId
+
         val post = ParseObject("Post")
         post.put("title", titleInfo.text.toString())
         post.put("description", descriptionText.text.toString())

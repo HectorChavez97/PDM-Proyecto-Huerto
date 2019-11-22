@@ -14,7 +14,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activities.Relacion_Usuario_Activity"></activity>
+
+        <activity android:name=".Activities.PopUpInfo_Activity"
+            android:theme="@style/AppTheme.PopUpActivities">
+        </activity>
+
+        <activity android:name=".Activities.Relacion_Usuario_Activity" />
         <activity android:name=".Activities.Register2_Activity" />
         <activity android:name=".Activities.New_Event_Activity" />
         <activity android:name=".Activities.Day_Activity" />

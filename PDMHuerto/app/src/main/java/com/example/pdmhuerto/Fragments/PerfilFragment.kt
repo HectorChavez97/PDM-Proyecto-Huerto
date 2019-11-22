@@ -1,7 +1,6 @@
 package com.example.pdmhuerto.Fragments
 
 import android.content.Intent
-import android.media.Image
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,17 +11,74 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.pdmhuerto.Activities.Register2_Activity
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.example.pdmhuerto.Activities.Relacion_Usuario_Activity
 import com.example.pdmhuerto.Activities.Start_Activity
+import com.example.pdmhuerto.Adapters.PostAdapter
 import com.example.pdmhuerto.Adapters.ProfileAdapter
 import com.example.pdmhuerto.R
 import com.parse.*
 import org.jetbrains.anko.doAsync
-import org.jetbrains.anko.uiThread
 import java.util.*
 
 class PerfilFragment: Fragment(), View.OnClickListener {
+    lateinit var profilePic: ImageView
+    lateinit var userName: TextView
+    lateinit var followers: TextView
+    lateinit var following: TextView
+    lateinit var followersNum: TextView
+    lateinit var followingNum: TextView
+    lateinit var logOut: Button
+
+    lateinit var recyclerView: RecyclerView
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        val root = inflater.inflate(R.layout.fragment_perfil, container, false)
+
+        recyclerView = root.findViewById(R.id.recycler_view_container)
+        profilePic   = root.findViewById(R.id.user_profile_picture)
+        userName     = root.findViewById(R.id.user_name)
+        followers    = root.findViewById(R.id.seguidos)
+        following    = root.findViewById(R.id.seguidores)
+        followersNum = root.findViewById(R.id.seguidores_n)
+        followingNum = root.findViewById(R.id.seguidos_n)
+        logOut       = root.findViewById(R.id.log_out)
+
+        followers.setOnClickListener(this)
+        following.setOnClickListener(this)
+        logOut.setOnClickListener(this)
+
+
+        getUserPost()
+        setUserName()
+        setUserImage()
+
+        return root
+    }
+
+    private fun getUserPost(){
+        doAsync {
+            val query = ParseQuery.getQuery<ParseObject>("Post")
+            query.include("postedBy")
+            query.whereEqualTo("postedBy", ParseObject.createWithoutData("_User", ParseUser.getCurrentUser().objectId))
+
+            query.findInBackground(object : FindCallback<ParseObject> {
+                var posts: List<ParseObject> = arrayListOf()
+
+                override fun done(postList: List<ParseObject>, e: ParseException?) {
+                    if (e == null) {
+                        posts = postList
+                        Collections.reverse(posts)
+                        recyclerView.adapter = PostAdapter(posts, true)
+                        recyclerView.adapter?.notifyDataSetChanged()
+                        recyclerView.layoutManager = LinearLayoutManager(context)
+                    }
+                }
+            })
+        }
+    }
+
     override fun onClick(v: View?) {
         when(v?.id){
             R.id.seguidos -> {
@@ -43,38 +99,13 @@ class PerfilFragment: Fragment(), View.OnClickListener {
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val root = inflater.inflate(R.layout.fragment_perfil, container, false)
-        val recyclerView: RecyclerView = root.findViewById(R.id.recycler_view_container)
-
-        val profilePic: ImageView = root.findViewById(R.id.user_profile_picture)
-        val followers: TextView = root.findViewById(R.id.seguidos)
-        val following: TextView = root.findViewById(R.id.seguidores)
-        val followersNum: TextView = root.findViewById(R.id.seguidores_n)
-        val followingNum: TextView = root.findViewById(R.id.seguidos_n)
-        val logOut: Button = root.findViewById(R.id.log_out)
-
-        doAsync {
-            val query = ParseQuery.getQuery<ParseObject>("Post")
-            query.findInBackground(object : FindCallback<ParseObject> {
-                var posts: List<ParseObject> = arrayListOf()
-
-                override fun done(postList: List<ParseObject>, e: ParseException?) {
-                    if (e == null) {
-                        posts = postList
-                        Collections.reverse(posts)
-                        recyclerView.adapter = ProfileAdapter(posts)
-                        recyclerView.adapter?.notifyDataSetChanged()
-                        recyclerView.layoutManager = LinearLayoutManager(context)
-                    }
-                }
-            })
-        }
-
-        followers.setOnClickListener(this)
-        following.setOnClickListener(this)
-        logOut.setOnClickListener(this)
-
-        return root
+    private fun setUserName(){
+        userName.text = ParseUser.getCurrentUser().get("username").toString()
     }
+
+    private fun setUserImage(){
+        val image = ParseUser.getCurrentUser().get("profilePicture") as ParseFile
+        Glide.with(context!!).load(image.data).apply(RequestOptions.circleCropTransform()).into(profilePic)
+    }
+
 }

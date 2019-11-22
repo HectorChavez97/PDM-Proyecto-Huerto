@@ -7,11 +7,9 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
 import com.example.pdmhuerto.R
 import com.parse.ParseFile
 import com.parse.ParseObject
-import com.parse.ParseQuery
 
 class ProfileAdapter(val list: List<ParseObject>): RecyclerView.Adapter<ProfileAdapter.ViewHolder>(){
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

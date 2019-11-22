@@ -28,21 +28,21 @@ class HomeAdapter(val list: List<ParseObject>): RecyclerView.Adapter<HomeAdapter
     }
 
     class ViewHolder(view: View): RecyclerView.ViewHolder(view){
+        val title:          TextView  = itemView.findViewById(R.id.title)
+        val profilePicture: ImageView = itemView.findViewById(R.id.user_profile_picture)
+        val userName:       TextView  = itemView.findViewById(R.id.user_name)
+        val description:    TextView  = itemView.findViewById(R.id.description)
+        val image:          ImageView = itemView.findViewById(R.id.imageView)
+
         private var rm = Glide.with(view)
 
         fun bindItems(data: ParseObject){
-            val title:          TextView  = itemView.findViewById(R.id.title)
-            val description:    TextView  = itemView.findViewById(R.id.description)
-            val image:          ImageView = itemView.findViewById(R.id.imageView)
-            val profilePicture: ImageView = itemView.findViewById(R.id.user_profile_picture)
-            val userName:       TextView  = itemView.findViewById(R.id.user_name)
-
             val img:     ParseFile  = data.getParseFile("image")!!
             val userN:   String     = data.getParseObject("postedBy")?.getString("username")!!
             val userImg: ParseFile  = data.getParseObject("postedBy")!!.getParseFile("profilePicture")!!
 
-
             userName.text    = userN
+
             title.text       = data.getString("title").toString()
             description.text = data.getString("description").toString()
             rm.load(img.data).into(image)

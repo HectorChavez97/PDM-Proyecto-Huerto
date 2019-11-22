@@ -6,6 +6,8 @@ import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.ImageDecoder
 import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Drawable
+import android.net.Uri
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -16,6 +18,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.core.graphics.drawable.toBitmap
+import androidx.core.graphics.drawable.toDrawable
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.pdmhuerto.R
@@ -31,7 +35,7 @@ class Register2_Activity : AppCompatActivity(), View.OnClickListener  {
     private lateinit var userShowName: TextView
     private lateinit var finishRegistration: Button
 
-    private lateinit var parseFile: ParseFile
+    private var parseFile: ParseFile? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -87,31 +91,24 @@ class Register2_Activity : AppCompatActivity(), View.OnClickListener  {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if(resultCode == Activity.RESULT_OK && data != null){
-            val image: Bitmap
-            Glide.with(this).load(data?.data).apply(RequestOptions.circleCropTransform()).into(userSetProfilePicture)
+        if(resultCode == Activity.RESULT_OK && data != null) {
+            Glide.with(this).load(data.data).apply(RequestOptions.circleCropTransform()).into(userSetProfilePicture)
 
-            if(Build.VERSION.SDK_INT < 28) {
-                image = MediaStore.Images.Media.getBitmap(this.contentResolver, data?.data)
-            }
+            val inputStream = contentResolver.openInputStream(data.data!!)
+            val drawable = Drawable.createFromStream(inputStream, data.data!!.toString())
 
-            else{
-                val imageDecoder = ImageDecoder.createSource(this.contentResolver, data.data!!)
-                image = ImageDecoder.decodeBitmap(imageDecoder)
-            }
+            val bitmap = drawable.toBitmap()
+            val arrayBytes = ByteArrayOutputStream()
+            bitmap.compress(Bitmap.CompressFormat.PNG, 0, arrayBytes)
+            val parseIma = arrayBytes.toByteArray()
 
-            val file = File(this.cacheDir, image.toString())
-            file.createNewFile()
+            var imageFile = ParseFile("userProfilePic.png", parseIma)
+            imageFile.saveInBackground(object : SaveCallback{
+                override fun done(e: ParseException?) {
+                    parseFile = imageFile
+                }
+            })
 
-            val bos = ByteArrayOutputStream()
-            image.compress(Bitmap.CompressFormat.PNG, 0, bos)
-
-            val fos = FileOutputStream(file)
-            fos.write(bos.toByteArray())
-            fos.flush()
-            fos.close()
-
-            parseFile = ParseFile(file)
         }
     }
 
@@ -130,9 +127,9 @@ class Register2_Activity : AppCompatActivity(), View.OnClickListener  {
         user.username = intent.getStringExtra("username")
         user.email = intent.getStringExtra("email")
         user.setPassword(intent.getStringExtra("password"))
-     /*   doAsync {
-            user.put("profileImage", parseFile)
-        } */
+        user.put("profilePicture", parseFile!!)
+
+        user.saveInBackground()
 
         user.signUpInBackground(object: SignUpCallback {
             override fun done(e: ParseException?) {
