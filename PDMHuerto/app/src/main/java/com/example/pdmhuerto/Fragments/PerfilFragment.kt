@@ -16,7 +16,6 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.pdmhuerto.Activities.Relacion_Usuario_Activity
 import com.example.pdmhuerto.Activities.Start_Activity
 import com.example.pdmhuerto.Adapters.PostAdapter
-import com.example.pdmhuerto.Adapters.ProfileAdapter
 import com.example.pdmhuerto.R
 import com.parse.*
 import org.jetbrains.anko.doAsync

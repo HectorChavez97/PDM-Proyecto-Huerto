@@ -15,5 +15,10 @@
     <string name="followers">Followers</string>
     <string name="following">Following</string>
 
+    <string name="seeds">Seeds</string>
+    <string name="tools">Tools</string>
+    <string name="flower_pot">Flowers pots</string>
+    <string name="soil">Soil</string>
+
 
 </resources>

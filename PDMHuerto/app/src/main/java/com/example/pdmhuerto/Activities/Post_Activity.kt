@@ -198,6 +198,7 @@ class Post_Activity : AppCompatActivity(), View.OnClickListener {
         post.put("description", descriptionText.text.toString())
         post.put("postedBy", ParseObject.createWithoutData("_User", userPointer))
         post.put("image", imageFile!!)
+        post.put("likes", 0)
 
         post.saveInBackground()
     }   

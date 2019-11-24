@@ -19,24 +19,24 @@ import com.parse.ParseFile
 import com.parse.ParseObject
 import org.jetbrains.anko.find
 
+
+//Adaptador para mostrar todos los post. Muestra los post en home y en perfil, se maneja aqui mismo que elementros mostrar
+//(utilizan todos el card_view_post)
+
 class PostAdapter(val list: List<ParseObject>, val isProfile: Boolean): RecyclerView.Adapter<PostAdapter.ViewHolder>(), View.OnClickListener{
     lateinit var info: ImageView
     lateinit var like: ImageView
     lateinit var context: Context
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val v = LayoutInflater.from(parent.context).inflate(R.layout.card_view_recycler, parent, false)
+        val v = LayoutInflater.from(parent.context).inflate(R.layout.card_view_post, parent, false)
 
         context = parent.context
         info = v.find(R.id.configuration)
         like = v.find(R.id.like)
 
-        if (isProfile){
-            info.visibility = View.VISIBLE
-        }
-        else{
-            like.visibility = View.VISIBLE
-        }
+        if (isProfile) info.visibility = View.VISIBLE
+        else           like.visibility = View.VISIBLE
 
         info.setOnClickListener(this)
         like.setOnClickListener(this)
@@ -64,31 +64,24 @@ class PostAdapter(val list: List<ParseObject>, val isProfile: Boolean): Recycler
         }
     }
 
-
-
-
-
-
-
     class ViewHolder(view: View): RecyclerView.ViewHolder(view){
-        private val title: TextView           = itemView.findViewById(R.id.title)
         private val profilePicture: ImageView = itemView.findViewById(R.id.user_profile_picture)
         private val userName: TextView        = itemView.findViewById(R.id.user_name)
+        private val title: TextView           = itemView.findViewById(R.id.title)
         private val description: TextView     = itemView.findViewById(R.id.description)
-        private val image: ImageView          = itemView.findViewById(R.id.imageView)
+        private val postImage: ImageView      = itemView.findViewById(R.id.imageView)
 
         private var rm = Glide.with(view)
 
         fun bindItems(data: ParseObject){
-            val img: ParseFile = data.getParseFile("image")!!
-            val userN:   String     = data.getParseObject("postedBy")?.getString("username")!!
+            val postImg: ParseFile = data.getParseFile("image")!!
             val userImg: ParseFile = data.getParseObject("postedBy")!!.getParseFile("profilePicture")!!
 
-            userName.text    = userN
+            userName.text    = data.getParseObject("postedBy")?.getString("username")!!
+            title.text       = data.getString("title")
+            description.text = data.getString("description")
 
-            title.text       = data.getString("title").toString()
-            description.text = data.getString("description").toString()
-            rm.load(img.data).into(image)
+            rm.load(postImg.data).into(postImage)
             rm.load(userImg.data).apply(RequestOptions.circleCropTransform()).into(profilePicture)
         }
     }

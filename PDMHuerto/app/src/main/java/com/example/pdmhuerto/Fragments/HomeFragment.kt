@@ -12,14 +12,13 @@ import com.example.pdmhuerto.R
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import android.content.Intent
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.example.pdmhuerto.Adapters.HomeAdapter
 import com.example.pdmhuerto.Adapters.PostAdapter
 import com.parse.FindCallback
 import com.parse.ParseException
 import com.parse.ParseObject
 import com.parse.ParseQuery
 import org.jetbrains.anko.doAsync
-import org.jetbrains.anko.uiThread
+import org.jetbrains.anko.find
 import java.util.*
 
 
@@ -31,9 +30,9 @@ class HomeFragment : Fragment(), View.OnClickListener, SwipeRefreshLayout.OnRefr
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val root = inflater.inflate(R.layout.fragment_home, container, false)
-        recyclerView        = root.findViewById(R.id.recycler_view_container)
-        addButton           = root.findViewById(R.id.button_create_post)
-        mSwipeRefreshLayout = root.findViewById(R.id.pullToRefresh)
+        recyclerView        = root.find(R.id.recycler_view_container)
+        addButton           = root.find(R.id.button_create_post)
+        mSwipeRefreshLayout = root.find(R.id.pullToRefresh)
 
         addButton.setOnClickListener(this)
         mSwipeRefreshLayout.setOnRefreshListener(this)
