@@ -17,6 +17,8 @@ import com.parse.FindCallback
 import com.parse.ParseException
 import com.parse.ParseObject
 import com.parse.ParseQuery
+import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter
+import jp.wasabeef.recyclerview.adapters.ScaleInAnimationAdapter
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.find
 import java.util.*
@@ -62,7 +64,11 @@ class HomeFragment : Fragment(), View.OnClickListener, SwipeRefreshLayout.OnRefr
                     if (e == null) {
                         posts = postList
                         Collections.reverse(posts)
-                        recyclerView.adapter = PostAdapter(posts, false)
+                        val adapter = AlphaInAnimationAdapter(PostAdapter(posts, false)).apply {
+                            setDuration(500)
+                            setFirstOnly(false)
+                        }
+                        recyclerView.adapter = ScaleInAnimationAdapter(adapter)
                         recyclerView.adapter?.notifyDataSetChanged()
                         recyclerView.layoutManager = LinearLayoutManager(context)
                         mSwipeRefreshLayout.isRefreshing = false

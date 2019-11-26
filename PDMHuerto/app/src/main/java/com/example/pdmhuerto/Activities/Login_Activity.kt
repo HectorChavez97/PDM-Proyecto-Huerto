@@ -59,9 +59,16 @@ class Login_Activity : AppCompatActivity(), View.OnClickListener {
     private fun validateUserLogin(username: String, password: String){
         ParseUser.logInInBackground(username, password) { parseUser, e ->
             if (parseUser != null) {
-                val intent = Intent(this, Navigation_Activity::class.java)
-                startActivity(intent)
-                finish()
+                if(parseUser.getBoolean("emailVerified")) {
+                    val intent = Intent(this, Navigation_Activity::class.java)
+                    startActivity(intent)
+                    finish()
+                }
+                else {
+                    ParseUser.logOut();
+                    alertDisplayer("Login Fail", "Please Verify Your Email first");
+                }
+
             } else {
                 alertDisplayer("Login Failed", "${e.message}Please Try Again")
             }

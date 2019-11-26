@@ -65,11 +65,11 @@ class PostAdapter(val list: List<ParseObject>, val isProfile: Boolean): Recycler
     }
 
     class ViewHolder(view: View): RecyclerView.ViewHolder(view){
-        private val profilePicture: ImageView = itemView.findViewById(R.id.user_profile_picture)
-        private val userName: TextView        = itemView.findViewById(R.id.user_name)
-        private val title: TextView           = itemView.findViewById(R.id.title)
-        private val description: TextView     = itemView.findViewById(R.id.description)
-        private val postImage: ImageView      = itemView.findViewById(R.id.imageView)
+        private val profilePicture: ImageView = itemView.find(R.id.user_profile_picture)
+        private val userName: TextView        = itemView.find(R.id.user_name)
+        private val title: TextView           = itemView.find(R.id.title)
+        private val description: TextView     = itemView.find(R.id.description)
+        private val postImage: ImageView      = itemView.find(R.id.imageView)
 
         private var rm = Glide.with(view)
 

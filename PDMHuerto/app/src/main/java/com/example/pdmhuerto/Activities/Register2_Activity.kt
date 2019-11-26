@@ -1,9 +1,11 @@
 package com.example.pdmhuerto.Activities
 
 import android.app.Activity
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.ImageDecoder
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
@@ -34,8 +36,7 @@ class Register2_Activity : AppCompatActivity(), View.OnClickListener  {
     private lateinit var userSetProfilePicture: ImageView
     private lateinit var userShowName: TextView
     private lateinit var finishRegistration: Button
-
-    private var parseFile: ParseFile? = null
+    private lateinit var parseFile: ParseFile
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,6 +61,13 @@ class Register2_Activity : AppCompatActivity(), View.OnClickListener  {
             .into(userSetProfilePicture)
 
         userShowName.text = intent.getStringExtra("username")
+
+        val bitmap = BitmapFactory.decodeResource(resources, R.drawable.default_profile_picture)
+        val arrayBytes = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.PNG, 0, arrayBytes)
+
+        val parseIma = arrayBytes.toByteArray()
+        parseFile = ParseFile("userProfilePic.png", parseIma)
     }
 
     override fun onClick(v: View?) {
@@ -127,13 +135,15 @@ class Register2_Activity : AppCompatActivity(), View.OnClickListener  {
         user.username = intent.getStringExtra("username")
         user.email = intent.getStringExtra("email")
         user.setPassword(intent.getStringExtra("password"))
-        user.put("profilePicture", parseFile!!)
+        user.put("profilePicture", parseFile)
 
         user.saveInBackground()
 
         user.signUpInBackground(object: SignUpCallback {
             override fun done(e: ParseException?) {
                 if(e == null){
+                    ParseUser.logOut()
+                    alertDisplayer("Account Created Successfully!", "Please verify your email before Login")
                     openActivity()
                 }
                 else{
@@ -144,7 +154,7 @@ class Register2_Activity : AppCompatActivity(), View.OnClickListener  {
     }
 
     fun openActivity(){
-        val intent = Intent(this, Navigation_Activity::class.java)
+        val intent = Intent(this, Start_Activity::class.java)
         startActivity(intent)
         finish()
     }
@@ -153,11 +163,10 @@ class Register2_Activity : AppCompatActivity(), View.OnClickListener  {
         val builder = AlertDialog.Builder(this)
         builder.setTitle(title)
         builder.setMessage(message)
+        builder.setPositiveButton(android.R.string.ok) {_, _->
 
-        builder.setNegativeButton(android.R.string.no) { _, _->
-            Toast.makeText(applicationContext,
-                android.R.string.no, Toast.LENGTH_SHORT).show()
         }
+
         builder.show()
     }
 
