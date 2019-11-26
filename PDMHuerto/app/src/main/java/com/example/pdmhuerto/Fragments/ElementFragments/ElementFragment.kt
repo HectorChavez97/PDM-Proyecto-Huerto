@@ -1,4 +1,4 @@
-package com.example.pdmhuerto.Fragments
+package com.example.pdmhuerto.Fragments.ElementFragments
 
 
 import android.content.Intent
@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pdmhuerto.Activities.Element_Activity
 import com.example.pdmhuerto.Adapters.ElementsAdapter
+import com.example.pdmhuerto.Fragments.CatalogoFragment
 import com.example.pdmhuerto.Interfaces.ElementCardViewListener
 import com.example.pdmhuerto.Interfaces.ReplaceFragment
 import com.example.pdmhuerto.R

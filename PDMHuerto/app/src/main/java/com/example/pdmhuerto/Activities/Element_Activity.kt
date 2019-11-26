@@ -1,31 +1,32 @@
 package com.example.pdmhuerto.Activities
 
-import android.content.Context
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
-import com.example.pdmhuerto.Adapters.ElementsContentAdapter
 import com.example.pdmhuerto.Adapters.ElementsPhotosAdapter
-import com.example.pdmhuerto.Adapters.PostAdapter
+import com.example.pdmhuerto.Adapters.MyPagerAdapter
+import com.example.pdmhuerto.Interfaces.ReplaceFragment
 import com.example.pdmhuerto.R
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.parse.*
+import kotlinx.android.synthetic.main.activity_element.*
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.find
-import java.util.*
 
-class Element_Activity : AppCompatActivity(), View.OnClickListener {
+class Element_Activity : AppCompatActivity(), View.OnClickListener, ReplaceFragment {
     lateinit var back: ImageView
     lateinit var next: ImageView
     lateinit var recyclerViewImages: RecyclerView
-    lateinit var recyclerViewContent: RecyclerView
+    lateinit var navView: BottomNavigationView
     lateinit var element: ParseObject
 
-    var isSemilla = false
+    private var isSemilla = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,15 +34,11 @@ class Element_Activity : AppCompatActivity(), View.OnClickListener {
         supportActionBar?.hide()
 
         recyclerViewImages  = find(R.id.recyclerView_images)
-        recyclerViewContent = find(R.id.recyclerView_content)
         back                = find(R.id.back)
         next                = find(R.id.next)
 
         isSemilla = intent.getStringExtra("className") == "Semillas"
-
-        if(isSemilla){
-            next.visibility = View.VISIBLE
-        }
+        if(isSemilla)next.visibility = View.VISIBLE
 
         back.setOnClickListener(this)
         next.setOnClickListener(this)
@@ -59,7 +56,7 @@ class Element_Activity : AppCompatActivity(), View.OnClickListener {
                     if(o != null && e == null){
                         element = o
                         recyclerViewImages()
-                        recyclerViewContent()
+                        fragmentAdapter()
                     }
                 }
             })
@@ -79,25 +76,25 @@ class Element_Activity : AppCompatActivity(), View.OnClickListener {
         pagerSnapHelper.attachToRecyclerView(recyclerViewImages)
     }
 
-    private fun recyclerViewContent(){
-        val pagerSnapHelper = PagerSnapHelper()
-        val photos = arrayListOf(
-            element.get("descripcion")!!,
-            element.get("nombre")!!)
-
-        recyclerViewContent.adapter = ElementsContentAdapter(photos)
-        recyclerViewContent.adapter?.notifyDataSetChanged()
-        recyclerViewContent.layoutManager = LinearLayoutManager(parent, LinearLayoutManager.HORIZONTAL, false)
-        pagerSnapHelper.attachToRecyclerView(recyclerViewContent)
+    private fun fragmentAdapter(){
+        val fragmentAdapter = MyPagerAdapter(supportFragmentManager, element)
+        viewPager.adapter = fragmentAdapter
+        tabLayout.setupWithViewPager(viewPager)
     }
 
     override fun onClick(v: View?) {
         when(v?.id){
             R.id.back -> {
-                val intent = Intent(this, Navigation_Activity::class.java)
-                startActivity(intent)
-                finish()
+
             }
         }
+    }
+
+    override fun createFragment(fragment: Fragment) {
+        supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.fragment_container, fragment)
+            .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+            .commit()
     }
 }

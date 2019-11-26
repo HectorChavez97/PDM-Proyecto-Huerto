@@ -61,13 +61,6 @@ class Register2_Activity : AppCompatActivity(), View.OnClickListener  {
             .into(userSetProfilePicture)
 
         userShowName.text = intent.getStringExtra("username")
-
-        val bitmap = BitmapFactory.decodeResource(resources, R.drawable.default_profile_picture)
-        val arrayBytes = ByteArrayOutputStream()
-        bitmap.compress(Bitmap.CompressFormat.PNG, 0, arrayBytes)
-
-        val parseIma = arrayBytes.toByteArray()
-        parseFile = ParseFile("userProfilePic.png", parseIma)
     }
 
     override fun onClick(v: View?) {
