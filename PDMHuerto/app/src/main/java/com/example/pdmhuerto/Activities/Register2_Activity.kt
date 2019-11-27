@@ -124,17 +124,12 @@ class Register2_Activity : AppCompatActivity(), View.OnClickListener  {
     }
 
     private fun registerUser(){
-        val user = ParseUser()
-        user.username = intent.getStringExtra("username")
-        user.email = intent.getStringExtra("email")
-        user.setPassword(intent.getStringExtra("password"))
+        val user = ParseUser.getCurrentUser()
         user.put("profilePicture", parseFile)
 
-        user.saveInBackground()
-
-        user.signUpInBackground(object: SignUpCallback {
+        user.saveInBackground(object : SaveCallback{
             override fun done(e: ParseException?) {
-                if(e == null){
+                if(e == null) {
                     ParseUser.logOut()
                     alertDisplayer("Account Created Successfully!", "Please verify your email before Login")
                     openActivity()
@@ -156,10 +151,11 @@ class Register2_Activity : AppCompatActivity(), View.OnClickListener  {
         val builder = AlertDialog.Builder(this)
         builder.setTitle(title)
         builder.setMessage(message)
-        builder.setPositiveButton(android.R.string.ok) {_, _->
 
+        builder.setNegativeButton(android.R.string.no) { _, _->
+            Toast.makeText(applicationContext,
+                android.R.string.no, Toast.LENGTH_SHORT).show()
         }
-
         builder.show()
     }
 

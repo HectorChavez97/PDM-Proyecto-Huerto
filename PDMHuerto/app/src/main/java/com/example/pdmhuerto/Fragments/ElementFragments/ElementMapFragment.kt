@@ -33,11 +33,10 @@ class ElementMapFragment(val element: ParseObject) : Fragment(), OnMapReadyCallb
     override fun onMapReady(map: GoogleMap?) {
         map?.let {
             mMap = it
-            // Add a marker in Sydney and move the camera
-            val location = LatLng(element.getParseGeoPoint("geoPoint")!!.latitude, element.getParseGeoPoint("geoPoint")!!.longitude )
+            val location = LatLng(element.getParseGeoPoint("geoPoint")!!.latitude,
+                                  element.getParseGeoPoint("geoPoint")!!.longitude )
             mMap.addMarker(MarkerOptions().position(location).title("Marker"))
-            mMap.moveCamera(CameraUpdateFactory.newLatLng(location))
-            mMap.cameraPosition
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 12.0f))
         }
     }
 }

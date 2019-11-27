@@ -36,74 +36,45 @@ class Register_Activity : AppCompatActivity(), View.OnClickListener {
 
     override fun onClick(v: View?) {
         when(v?.id){
-            R.id.button_registation2 ->{
-                if(validateLocalData() == ALL_CORRECT){
-                    val name     = username.text.toString()
-                    val email    = email.text.toString()
-                    val password = password.text.toString()
-                    if(!da(name, email)){
-                        openActivity(name, email, password)
+            R.id.button_registation2 -> registerUser()
+        }
+    }
+
+    private fun registerUser(){
+        val name        = username.text.toString()
+        val email       = email.text.toString()
+
+        val password    = password.text.toString()
+        val passwordVal = valPassword.text.toString()
+
+        if(validatePassword(password, passwordVal)){
+            val user = ParseUser()
+            user.username   = name
+            user.email      = email
+            user.setPassword(password)
+
+            user.saveInBackground()
+
+            user.signUpInBackground(object: SignUpCallback {
+                override fun done(e: ParseException?) {
+                    if(e == null){
+                        openActivity(name)
+                    }
+                    else{
+                        alertDisplayer("Register Fail", "${e.message} Please Try Again")
                     }
                 }
-            }
+            })
         }
     }
 
-    private fun validateLocalData(): Int{
-        if(username.text.toString() == ""){
-            alertDisplayer("Error", "Please insert your username")
-            return USER_MISSING
-        }
-        if(email.text.toString() == ""){
-            alertDisplayer("Error", "Please insert your email")
-            return EMAIL_MISSING
-        }
-        if(password.text.toString() == ""){
-            alertDisplayer("Error", "Please insert your password")
-            return PASSWORD_MISSING
-        }
-        if(valPassword.text.toString() == ""){
-            alertDisplayer("Error", "Please check your password")
-            return VALIDATE_PASSWORD_MISSING
-        }
-        if(password.text.toString() != valPassword.text.toString()){
-            alertDisplayer("Error", "Passwords are not the same")
-            return PASSWORD_INCORRECT
-        }
-
-        return ALL_CORRECT
+    private fun validatePassword(pass1: String, pass2: String): Boolean{
+        return pass1 == pass2
     }
 
-    private fun da(name: String, email: String): Boolean{
-        var flag = false
-        val query = ParseQuery.getQuery<ParseObject>("_User")
-
-        query.findInBackground(object : FindCallback<ParseObject>{
-            override fun done(userList: List<ParseObject>, e: ParseException?) {
-                if (e == null) {
-                    for(i in userList){
-                        if(i.get("username").toString() == name){
-                            alertDisplayer("Register Fail", "Username already in use")
-                            flag = true
-                        }
-                        if(i.get("email").toString() == email){
-                            alertDisplayer("Register Fail", "Email already in use")
-                            flag = true
-                        }
-                    }
-                }
-            }
-        })
-
-        Log.d("Register.Activity", flag.toString())
-        return flag
-    }
-
-    fun openActivity(name: String, email: String, password: String){
+    fun openActivity(name: String){
         val intent = Intent(this, Register2_Activity::class.java)
         intent.putExtra("username", name)
-        intent.putExtra("email", email)
-        intent.putExtra("password", password)
         startActivity(intent)
         finish()
     }

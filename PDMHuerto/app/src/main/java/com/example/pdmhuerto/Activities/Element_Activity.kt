@@ -21,9 +21,7 @@ import org.jetbrains.anko.find
 
 class Element_Activity : AppCompatActivity(), View.OnClickListener, ReplaceFragment {
     lateinit var back: ImageView
-    lateinit var next: ImageView
     lateinit var recyclerViewImages: RecyclerView
-    lateinit var navView: BottomNavigationView
     lateinit var element: ParseObject
 
     private var isSemilla = false
@@ -35,14 +33,9 @@ class Element_Activity : AppCompatActivity(), View.OnClickListener, ReplaceFragm
 
         recyclerViewImages  = find(R.id.recyclerView_images)
         back                = find(R.id.back)
-        next                = find(R.id.next)
+        back.setOnClickListener(this)
 
         isSemilla = intent.getStringExtra("className") == "Semillas"
-        if(isSemilla)next.visibility = View.VISIBLE
-
-        back.setOnClickListener(this)
-        next.setOnClickListener(this)
-
         getData(intent.getStringExtra("id")!!, intent.getStringExtra("className")!!)
     }
 
