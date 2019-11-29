@@ -28,7 +28,8 @@
         android:id="@+id/viewPager"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tabLayout" />
+        android:layout_below="@+id/tabLayout"
+        android:layout_margin="20dp"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/back"
