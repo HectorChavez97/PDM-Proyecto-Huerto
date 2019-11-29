@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.*
+import androidx.appcompat.app.AlertDialog
 import com.example.pdmhuerto.R
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.parse.ParseObject
@@ -91,14 +92,15 @@ class AgregarHuerto_Activity : AppCompatActivity(), View.OnClickListener {
 
             R.id.button_create_event -> {
                 if(validateData()) saveEvent()
+                else alertDisplayer("Data invalid", "The data input is invalid, please check it and try again")
             }
         }
     }
 
     private fun validateData(): Boolean{
-        if(!::semillaSelected.isInitialized) return false
-        if(!::macetaSelected.isInitialized)  return false
-        if(!::tierraSelected.isInitialized)  return false
+        if(!::semillaSelected.isInitialized || semillaSelected == "...") return false
+        if(!::macetaSelected.isInitialized  || macetaSelected == "...") return false
+        if(!::tierraSelected.isInitialized  || tierraSelected == "...") return false
         if(!::dateSelected.isInitialized) return false
 
         return true
@@ -132,18 +134,30 @@ class AgregarHuerto_Activity : AppCompatActivity(), View.OnClickListener {
 
         val datePick = DatePickerDialog(this,
             DatePickerDialog.OnDateSetListener{ _, year, month, dayOfMonth ->
-                val c = Calendar.getInstance()
-                c.set(Calendar.YEAR, year)
-                c.set(Calendar.MONTH, month)
-                c.set(Calendar.DAY_OF_MONTH, dayOfMonth)
-                c.set(Calendar.HOUR_OF_DAY, 0)
-                c.set(Calendar.MINUTE, 0)
-                c.set(Calendar.SECOND, 0)
-                c.set(Calendar.MILLISECOND, 0)
+                val myCal = Calendar.getInstance()
+                myCal.set(Calendar.YEAR, year)
+                myCal.set(Calendar.MONTH, month)
+                myCal.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+                myCal.set(Calendar.HOUR_OF_DAY, 0)
+                myCal.set(Calendar.MINUTE, 0)
+                myCal.set(Calendar.SECOND, 0)
+                myCal.set(Calendar.MILLISECOND, 0)
 
-                dateSelected = c.time
+                dateSelected = myCal.time
             }, year, month, day)
 
         datePick.show()
+    }
+
+    fun alertDisplayer(title: String, message: String) {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle(title)
+        builder.setMessage(message)
+
+        builder.setNegativeButton(android.R.string.no) { _, _->
+            Toast.makeText(applicationContext,
+                android.R.string.no, Toast.LENGTH_SHORT).show()
+        }
+        builder.show()
     }
 }

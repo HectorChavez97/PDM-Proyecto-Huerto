@@ -12,6 +12,7 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
@@ -60,6 +61,7 @@ class Register2_Activity : AppCompatActivity(), View.OnClickListener  {
             .into(userSetProfilePicture)
 
         userShowName.text = intent.getStringExtra("username")
+        saveDefaultImage()
     }
 
     override fun onClick(v: View?) {
@@ -92,11 +94,13 @@ class Register2_Activity : AppCompatActivity(), View.OnClickListener  {
         super.onActivityResult(requestCode, resultCode, data)
 
         if(resultCode == Activity.RESULT_OK && data != null) {
-            Glide.with(this).load(data.data).apply(RequestOptions.circleCropTransform()).into(userSetProfilePicture)
+            Glide.with(this)
+                .load(data.data)
+                .apply(RequestOptions.circleCropTransform())
+                .into(userSetProfilePicture)
 
             val inputStream = contentResolver.openInputStream(data.data!!)
             val drawable = Drawable.createFromStream(inputStream, data.data!!.toString())
-
             val bitmap = drawable.toBitmap()
             val arrayBytes = ByteArrayOutputStream()
             bitmap.compress(Bitmap.CompressFormat.PNG, 0, arrayBytes)
@@ -108,8 +112,24 @@ class Register2_Activity : AppCompatActivity(), View.OnClickListener  {
                     parseFile = imageFile
                 }
             })
-
+        } else {
+            saveDefaultImage()
         }
+    }
+
+    private fun saveDefaultImage() {
+        val drawable = resources.getDrawable(R.drawable.default_profile_picture)
+        val bitmap = drawable.toBitmap()
+        val arrayBytes = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.PNG, 0, arrayBytes)
+        val parseIma = arrayBytes.toByteArray()
+
+        var imageFile = ParseFile("userProfilePic.png", parseIma)
+        imageFile.saveInBackground(object : SaveCallback{
+            override fun done(e: ParseException?) {
+                parseFile = imageFile
+            }
+        })
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
@@ -123,7 +143,6 @@ class Register2_Activity : AppCompatActivity(), View.OnClickListener  {
     }
 
     private fun registerUser(){
-<<<<<<< HEAD
         val user = ParseUser()
         user.username = intent.getStringExtra("username")
         user.email = intent.getStringExtra("email")
@@ -135,6 +154,7 @@ class Register2_Activity : AppCompatActivity(), View.OnClickListener  {
         user.signUpInBackground(object: SignUpCallback {
             override fun done(e: ParseException?) {
                 if(e == null){
+                    ParseUser.logOut()
                     openActivity()
                 }
                 else{
@@ -142,11 +162,6 @@ class Register2_Activity : AppCompatActivity(), View.OnClickListener  {
                 }
             }
         })
-=======
-        ParseUser.getCurrentUser().put("profilePicture", parseFile)
-        ParseUser.logOut()
-        openActivity()
->>>>>>> 92046b3845b39546895db0e1d72ca7102d3868c8
     }
 
     fun openActivity(){

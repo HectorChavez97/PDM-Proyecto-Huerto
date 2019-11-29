@@ -12,19 +12,17 @@ class MyPagerAdapter(fragment: FragmentManager, val element: ParseObject): Fragm
     override fun getItem(position: Int): Fragment {
         return when(position){
             0 ->           ElementDescriptionFragment(element)
-            1 ->           ElementDescriptionFragment(element)
             else -> return ElementMapFragment(element)
         }
     }
 
     override fun getCount(): Int {
-        return 3
+        return 2
     }
 
     override fun getPageTitle(position: Int): CharSequence? {
         return when(position){
             0 -> "Description"
-            1 -> "Tips"
             else -> return "Places"
         }
     }

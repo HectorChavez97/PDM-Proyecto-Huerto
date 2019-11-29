@@ -3,52 +3,70 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/colorBackground">
 
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/textViewSeeds"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_marginStart="5dp"
         android:text="@string/seeds"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Spinner
         android:id="@+id/spinnerSemilla"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
         app:layout_constraintTop_toBottomOf="@id/textViewSeeds"/>
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/textViewSoil"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_marginStart="5dp"
         android:text="@string/soil"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         app:layout_constraintTop_toBottomOf="@+id/spinnerSemilla" />
     <Spinner
         android:id="@+id/spinnerMaceta"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
         app:layout_constraintTop_toBottomOf="@+id/textViewSoil"/>
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/textViewMaceta"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_marginStart="5dp"
         android:text="@string/flower_pot"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         app:layout_constraintTop_toBottomOf="@+id/spinnerMaceta" />
     <Spinner
         android:id="@+id/spinnerTierra"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
         app:layout_constraintTop_toBottomOf="@+id/textViewMaceta"/>
 
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/datePicker"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/user"
+        android:layout_width="150dp"
+        android:layout_height="60dp"
+        android:text="@string/select_date"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="20dp"
         app:layout_constraintTop_toBottomOf="@id/spinnerTierra"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>

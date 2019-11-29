@@ -14,16 +14,20 @@
     <string name="logout">Logout</string>
     <string name="followers">Followers</string>
     <string name="following">Following</string>
+    <string name="select_date">Select date</string>
 
     <string name="seeds">Seeds</string>
     <string name="tools">Tools</string>
-    <string name="flower_pot_soil">Flowers pots and Soil</string>
+    <string name="flower_pot_soil">Flower pots / Soil</string>
+    <string name="flower_pot">Flower pots</string>
+    <string name="soil">Soil</string>
     <string name="books">Books</string>
     <string name="title_activity_element_1">Element_Activity1</string>
     <string name="tab_text_1">Tab 1</string>
     <string name="tab_text_2">Tab 2</string>
     <string name="title_activity_element_tab_">ElementTab_Activity</string>
     <string name="title_activity_maps">Map</string>
+
 
 
 </resources>
