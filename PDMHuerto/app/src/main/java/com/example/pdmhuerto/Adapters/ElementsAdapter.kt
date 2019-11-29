@@ -51,7 +51,7 @@ class ElementsAdapter(val list: List<ParseObject>, OnCardViewListener: ElementCa
             val img: ParseFile = data.getParseFile("fotoPrevia")!!           //agregar una para columna nueva para mostrar review
 
             name.text           = data.getString("nombre")
-            description.text    = data.getString("descripcion")
+            description.text    = data.getString("DescripcionPrevia")
             rm.load(img.data).into(picture)
         }
 

@@ -14,13 +14,14 @@ import com.example.pdmhuerto.Adapters.MyPagerAdapter
 import com.example.pdmhuerto.Interfaces.ReplaceFragment
 import com.example.pdmhuerto.R
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.parse.*
 import kotlinx.android.synthetic.main.activity_element.*
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.find
 
 class Element_Activity : AppCompatActivity(), View.OnClickListener, ReplaceFragment {
-    lateinit var back: ImageView
+    lateinit var back: FloatingActionButton
     lateinit var recyclerViewImages: RecyclerView
     lateinit var element: ParseObject
 
@@ -78,7 +79,7 @@ class Element_Activity : AppCompatActivity(), View.OnClickListener, ReplaceFragm
     override fun onClick(v: View?) {
         when(v?.id){
             R.id.back -> {
-
+                finish()
             }
         }
     }
