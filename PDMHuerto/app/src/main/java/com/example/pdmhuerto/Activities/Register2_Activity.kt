@@ -154,6 +154,7 @@ class Register2_Activity : AppCompatActivity(), View.OnClickListener  {
         user.signUpInBackground(object: SignUpCallback {
             override fun done(e: ParseException?) {
                 if(e == null){
+                    ParseUser.logOut()
                     openActivity()
                 }
                 else{
@@ -161,8 +162,6 @@ class Register2_Activity : AppCompatActivity(), View.OnClickListener  {
                 }
             }
         })
-        ParseUser.logOut()
-        openActivity()
     }
 
     fun openActivity(){
