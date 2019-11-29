@@ -143,7 +143,6 @@ class Register2_Activity : AppCompatActivity(), View.OnClickListener  {
     }
 
     private fun registerUser(){
-<<<<<<< HEAD
         val user = ParseUser()
         user.username = intent.getStringExtra("username")
         user.email = intent.getStringExtra("email")
@@ -162,11 +161,8 @@ class Register2_Activity : AppCompatActivity(), View.OnClickListener  {
                 }
             }
         })
-=======
-        ParseUser.getCurrentUser().put("profilePicture", parseFile)
         ParseUser.logOut()
         openActivity()
->>>>>>> 92046b3845b39546895db0e1d72ca7102d3868c8
     }
 
     fun openActivity(){
