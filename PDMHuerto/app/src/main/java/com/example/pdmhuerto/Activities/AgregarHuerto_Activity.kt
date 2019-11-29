@@ -1,6 +1,7 @@
 package com.example.pdmhuerto.Activities
 
 import android.app.DatePickerDialog
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -31,8 +32,10 @@ class AgregarHuerto_Activity : AppCompatActivity(), View.OnClickListener {
         setContentView(R.layout.activity_agregar_huerto)
 
         val semillas     = getData("Semillas")
-        val macetas      = getData("Macetas")
-        val tierra       = getData("Tierra")
+        val macetasTierra= getData("Tierra")
+
+        val macetas = listOf("...") + macetasTierra.filter {it.contains("Macetas")}
+        val tierra  = listOf("...") + macetasTierra.filter {it.contains("Suelo")}
 
         nextButton = find(R.id.button_create_event)
         datePicker = find(R.id.datePicker)
@@ -84,13 +87,24 @@ class AgregarHuerto_Activity : AppCompatActivity(), View.OnClickListener {
 
     override fun onClick(v: View?) {
         when(v?.id){
-            R.id.datePicker -> showDate()
+            R.id.datePicker          -> showDate()
 
-            R.id.button_create_event -> a()
+            R.id.button_create_event -> {
+                if(validateData()) saveEvent()
+            }
         }
     }
 
-    private fun a(){
+    private fun validateData(): Boolean{
+        if(!::semillaSelected.isInitialized) return false
+        if(!::macetaSelected.isInitialized)  return false
+        if(!::tierraSelected.isInitialized)  return false
+        if(!::dateSelected.isInitialized) return false
+
+        return true
+    }
+
+    private fun saveEvent(){
         val userPointer = ParseUser.getCurrentUser().objectId
 
         val post = ParseObject("Huerto")
@@ -100,7 +114,14 @@ class AgregarHuerto_Activity : AppCompatActivity(), View.OnClickListener {
         post.put("date", dateSelected)
         post.put("postedBy", ParseObject.createWithoutData("_User", userPointer))
 
-        post.saveInBackground()
+        post.save()
+        openActivity()
+    }
+
+    private fun openActivity(){
+        val intent = Intent(this, Navigation_Activity::class.java)
+        startActivity(intent)
+        finish()
     }
 
     private fun showDate(){

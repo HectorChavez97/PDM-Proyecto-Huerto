@@ -11,6 +11,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class Navigation_Activity : AppCompatActivity(), ReplaceFragment {
     override fun onCreate(savedInstanceState: Bundle?) {
+        Start_Activity.toFinish.activity!!.finish()
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_navigation)
 

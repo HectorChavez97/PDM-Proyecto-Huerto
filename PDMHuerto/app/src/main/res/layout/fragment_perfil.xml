@@ -12,37 +12,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
-        android:layout_alignParentTop="true">
+        android:layout_alignParentTop="true"
+        android:padding="5dp">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/user_profile_picture"
             android:layout_width="60dp"
             android:layout_height="60dp"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_margin="5dp"/>
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/seguidos"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/following"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            android:layout_marginStart="15dp"
-            android:layout_marginTop="5dp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/user_profile_picture" />
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/seguidores"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/followers"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            android:layout_marginStart="15dp"
-            android:layout_marginTop="5dp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/seguidos"/>
+            app:layout_constraintStart_toStartOf="parent" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/log_out"
@@ -52,6 +30,7 @@
             android:textAllCaps="false"
             android:layout_margin="5dp"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
 
         <com.google.android.material.textview.MaterialTextView
@@ -60,29 +39,19 @@
             android:layout_height="wrap_content"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:layout_marginStart="5dp"
-            app:layout_constraintTop_toBottomOf="@+id/user_profile_picture"
-            app:layout_constraintStart_toStartOf="@+id/user_profile_picture"
-            app:layout_constraintEnd_toEndOf="@+id/user_profile_picture"/>
+            android:layout_marginTop="5dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/user_profile_picture" />
 
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/seguidos_n"
+            android:id="@+id/user_email"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@id/seguidos"
-            android:text="10"
-            app:layout_constraintTop_toBottomOf="@+id/seguidos"
-            app:layout_constraintStart_toStartOf="@+id/seguidos"
-            app:layout_constraintEnd_toEndOf="@+id/seguidos"/>
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/seguidores_n"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@id/seguidores"
-            android:text="22"
-            app:layout_constraintTop_toBottomOf="@+id/seguidores"
-            app:layout_constraintStart_toStartOf="@+id/seguidores"
-            app:layout_constraintEnd_toEndOf="@+id/seguidores"/>
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="5dp"
+            app:layout_constraintTop_toBottomOf="@+id/user_name"
+            app:layout_constraintStart_toEndOf="@+id/user_profile_picture" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 

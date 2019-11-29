@@ -33,7 +33,6 @@ class ElementsAdapter(val list: List<ParseObject>, OnCardViewListener: ElementCa
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bindItems(list[position])
-
     }
 
     class ViewHolder(view: View, OnCardViewListener: ElementCardViewListener): RecyclerView.ViewHolder(view), View.OnClickListener{

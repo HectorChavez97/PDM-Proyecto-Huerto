@@ -8,16 +8,25 @@
     tools:context=".Activities.Start_Activity"
     android:background="@drawable/navigation_activity_background_img">
 
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/logo"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:src="@drawable/logoapp"
+        android:layout_marginTop="75dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
     <com.google.android.material.button.MaterialButton
         android:id="@+id/activity_login_button_start"
         android:layout_width="150dp"
         android:layout_height="60dp"
-        android:layout_marginBottom="120dp"
+        android:layout_marginTop="30dp"
         android:text="@string/login"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintTop_toBottomOf="@+id/logo" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/activity_register_button_start"

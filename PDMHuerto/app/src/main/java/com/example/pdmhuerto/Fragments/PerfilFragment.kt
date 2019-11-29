@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.example.pdmhuerto.Activities.Relacion_Usuario_Activity
 import com.example.pdmhuerto.Activities.Start_Activity
 import com.example.pdmhuerto.Adapters.PostAdapter
 import com.example.pdmhuerto.R
@@ -38,14 +37,8 @@ class PerfilFragment: Fragment(), View.OnClickListener {
         recyclerView = root.findViewById(R.id.recycler_view_container)
         profilePic   = root.findViewById(R.id.user_profile_picture)
         userName     = root.findViewById(R.id.user_name)
-        followers    = root.findViewById(R.id.seguidos)
-        following    = root.findViewById(R.id.seguidores)
-        followersNum = root.findViewById(R.id.seguidores_n)
-        followingNum = root.findViewById(R.id.seguidos_n)
         logOut       = root.findViewById(R.id.log_out)
 
-        followers.setOnClickListener(this)
-        following.setOnClickListener(this)
         logOut.setOnClickListener(this)
 
 
@@ -80,16 +73,6 @@ class PerfilFragment: Fragment(), View.OnClickListener {
 
     override fun onClick(v: View?) {
         when(v?.id){
-            R.id.seguidos -> {
-                val intent = Intent(context, Relacion_Usuario_Activity::class.java)
-                intent.putExtra("toSelect", "following")
-                startActivity(intent)
-            }
-            R.id.seguidores -> {
-                val intent = Intent(context, Relacion_Usuario_Activity::class.java)
-                intent.putExtra("toSelect", "followers")
-                startActivity(intent)
-            }
             R.id.log_out -> {
                 ParseUser.logOut()
                 val intent = Intent(context, Start_Activity::class.java)

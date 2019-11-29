@@ -1,11 +1,9 @@
 package com.example.pdmhuerto.Activities
 
 import android.app.Activity
-import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.graphics.ImageDecoder
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
@@ -36,7 +34,8 @@ class Register2_Activity : AppCompatActivity(), View.OnClickListener  {
     private lateinit var userSetProfilePicture: ImageView
     private lateinit var userShowName: TextView
     private lateinit var finishRegistration: Button
-    private lateinit var parseFile: ParseFile
+
+    private var parseFile: ParseFile? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -124,14 +123,17 @@ class Register2_Activity : AppCompatActivity(), View.OnClickListener  {
     }
 
     private fun registerUser(){
-        val user = ParseUser.getCurrentUser()
-        user.put("profilePicture", parseFile)
+        val user = ParseUser()
+        user.username = intent.getStringExtra("username")
+        user.email = intent.getStringExtra("email")
+        user.setPassword(intent.getStringExtra("password"))
+        user.put("profilePicture", parseFile!!)
 
-        user.saveInBackground(object : SaveCallback{
+        user.saveInBackground()
+
+        user.signUpInBackground(object: SignUpCallback {
             override fun done(e: ParseException?) {
-                if(e == null) {
-                    ParseUser.logOut()
-                    alertDisplayer("Account Created Successfully!", "Please verify your email before Login")
+                if(e == null){
                     openActivity()
                 }
                 else{
@@ -142,7 +144,7 @@ class Register2_Activity : AppCompatActivity(), View.OnClickListener  {
     }
 
     fun openActivity(){
-        val intent = Intent(this, Start_Activity::class.java)
+        val intent = Intent(this, Login_Activity::class.java)
         startActivity(intent)
         finish()
     }

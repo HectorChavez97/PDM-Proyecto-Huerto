@@ -5,23 +5,44 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/textViewSeeds"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/seeds"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <Spinner
         android:id="@+id/spinnerSemilla"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toBottomOf="@id/textViewSeeds"/>
 
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/textViewSoil"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/soil"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerSemilla" />
     <Spinner
         android:id="@+id/spinnerMaceta"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/spinnerSemilla"/>
+        app:layout_constraintTop_toBottomOf="@+id/textViewSoil"/>
 
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/textViewMaceta"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/flower_pot"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerMaceta" />
     <Spinner
         android:id="@+id/spinnerTierra"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/spinnerMaceta"/>
+        app:layout_constraintTop_toBottomOf="@+id/textViewMaceta"/>
+
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/datePicker"

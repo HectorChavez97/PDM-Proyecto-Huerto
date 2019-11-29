@@ -22,8 +22,8 @@ class Login_Activity : AppCompatActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        mLogin = find(R.id.activity_login_btn_login)
-        user = find(R.id.login_username)
+        mLogin   = find(R.id.activity_login_btn_login)
+        user     = find(R.id.login_username)
         password = find(R.id.login_password)
 
         mLogin.setOnClickListener(this)

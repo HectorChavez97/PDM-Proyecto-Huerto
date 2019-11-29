@@ -2,6 +2,7 @@ package com.example.pdmhuerto.Fragments
 
 import android.content.Intent
 import android.os.Bundle
+import android.provider.CalendarContract
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pdmhuerto.Activities.AgregarHuerto_Activity
 import com.example.pdmhuerto.Adapters.EventsCalendarAdapter
+import com.example.pdmhuerto.Interfaces.ElementCardViewListener
 import com.example.pdmhuerto.R
 import com.parse.*
 import devs.mulham.horizontalcalendar.HorizontalCalendar
@@ -22,7 +24,7 @@ import java.util.*
 import kotlin.math.log
 
 
-class HuertoFragment : Fragment(), View.OnClickListener {
+class HuertoFragment : Fragment(), View.OnClickListener, ElementCardViewListener {
     lateinit var add: ImageView
     lateinit var recyclerView: RecyclerView
 
@@ -37,7 +39,7 @@ class HuertoFragment : Fragment(), View.OnClickListener {
         val endDate: Calendar = Calendar.getInstance()
 
         startDate.add(Calendar.MONTH, -1)
-        endDate.add(Calendar.MONTH, 1)
+        endDate.add(Calendar.MONTH, 3)
 
         val horizontalCalendar: HorizontalCalendar = HorizontalCalendar.Builder(root, R.id.calendarView)
             .range(startDate, endDate)
@@ -58,6 +60,8 @@ class HuertoFragment : Fragment(), View.OnClickListener {
                 doAsync{
                     val query = ParseQuery.getQuery<ParseObject>("Huerto")
                     query.whereEqualTo("date", c.time)
+                    query.whereEqualTo("postedBy", ParseObject.createWithoutData("_User", ParseUser.getCurrentUser().objectId))
+
 
                     query.findInBackground(object : FindCallback<ParseObject> {
                         var events: List<ParseObject> = arrayListOf()
@@ -65,7 +69,7 @@ class HuertoFragment : Fragment(), View.OnClickListener {
                         override fun done(postList: List<ParseObject>, e: ParseException?) {
                             if (e == null) {
                                 events = postList
-                                recyclerView.adapter = EventsCalendarAdapter(events)
+                                recyclerView.adapter = EventsCalendarAdapter(events, this@HuertoFragment)
                                 recyclerView.adapter?.notifyDataSetChanged()
                                 recyclerView.layoutManager = LinearLayoutManager(context)
                             }
@@ -74,14 +78,6 @@ class HuertoFragment : Fragment(), View.OnClickListener {
                 }
             }
         }
-
-        /*  val intent = Intent(Intent.ACTION_INSERT).setData(CalendarContract.Events.CONTENT_URI).
-            putExtra(CalendarContract.Events.TITLE, "Test calendar").
-                putExtra(CalendarContract.Events.DESCRIPTION, "Evento para probar si esto sirve").
-                putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, System.currentTimeMillis()).
-                putExtra(CalendarContract.EXTRA_EVENT_END_TIME, System.currentTimeMillis() + (60*60+1000))
-
-            startActivity(intent) */
 
         return root
     }
@@ -93,6 +89,16 @@ class HuertoFragment : Fragment(), View.OnClickListener {
                 startActivity(intent)
             }
         }
+    }
+
+    override fun onCardViewClick(position: Int) {
+        val intent = Intent(Intent.ACTION_INSERT).setData(CalendarContract.Events.CONTENT_URI).
+            putExtra(CalendarContract.Events.TITLE, "Mi Huerto").
+            putExtra(CalendarContract.Events.DESCRIPTION, "Event for...").
+            putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, System.currentTimeMillis()).
+            putExtra(CalendarContract.EXTRA_EVENT_END_TIME, System.currentTimeMillis() + (60*60+1000))
+
+        startActivity(intent)
     }
 
 }
