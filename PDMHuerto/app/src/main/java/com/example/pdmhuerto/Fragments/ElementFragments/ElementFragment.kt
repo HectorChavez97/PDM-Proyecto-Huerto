@@ -32,8 +32,6 @@ class ElementFragment(val type: String) : Fragment(), View.OnClickListener, Repl
     lateinit var recyclerView: RecyclerView
     lateinit var elements: List<ParseObject>
 
-    var isSemilla: Boolean = false
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val root = inflater.inflate(R.layout.fragment_element, container, false)
 
@@ -53,7 +51,6 @@ class ElementFragment(val type: String) : Fragment(), View.OnClickListener, Repl
             query.findInBackground(object : FindCallback<ParseObject> {
                 override fun done(elementsList: List<ParseObject>, e: ParseException?) {
                     if (e == null) {
-                        if (parseClass == "Semillas") isSemilla = true
                         elements = elementsList
                         recyclerView.adapter = ElementsAdapter(elements, this@ElementFragment)
                         recyclerView.adapter?.notifyDataSetChanged()

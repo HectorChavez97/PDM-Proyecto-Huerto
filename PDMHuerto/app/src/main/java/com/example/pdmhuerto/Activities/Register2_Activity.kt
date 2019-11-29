@@ -124,25 +124,13 @@ class Register2_Activity : AppCompatActivity(), View.OnClickListener  {
     }
 
     private fun registerUser(){
-        val user = ParseUser.getCurrentUser()
-        user.put("profilePicture", parseFile)
-
-        user.saveInBackground(object : SaveCallback{
-            override fun done(e: ParseException?) {
-                if(e == null) {
-                    ParseUser.logOut()
-                    alertDisplayer("Account Created Successfully!", "Please verify your email before Login")
-                    openActivity()
-                }
-                else{
-                    alertDisplayer("Register Fail", "${e.message} Please Try Again")
-                }
-            }
-        })
+        ParseUser.getCurrentUser().put("profilePicture", parseFile)
+        ParseUser.logOut()
+        openActivity()
     }
 
     fun openActivity(){
-        val intent = Intent(this, Start_Activity::class.java)
+        val intent = Intent(this, Login_Activity::class.java)
         startActivity(intent)
         finish()
     }

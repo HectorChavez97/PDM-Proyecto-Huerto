@@ -17,8 +17,8 @@
 
     <string name="seeds">Seeds</string>
     <string name="tools">Tools</string>
-    <string name="flower_pot">Flowers pots</string>
-    <string name="soil">Soil</string>
+    <string name="flower_pot_soil">Flowers pots and Soil</string>
+    <string name="books">Books</string>
     <string name="title_activity_element_1">Element_Activity1</string>
     <string name="tab_text_1">Tab 1</string>
     <string name="tab_text_2">Tab 2</string>
